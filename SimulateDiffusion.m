@@ -4,7 +4,7 @@ dt=2*10^-6;
 N_particle=10^3;
 MaxFrame=1*10^4;
 Resolution=0.2;
-D=200;
+D=600;
 mu=0;
 sigma=sqrt(2.0*D*dt);
 % % % Initial condition
