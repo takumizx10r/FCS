@@ -13,15 +13,17 @@ FitRange=str2num(answer{3});
 ave_photon=mean(photon);
 photon=photon-ave_photon;
 tau=zeros(1,N_max);
+g=zeros(1,N_max);
 tic
 for j=0:N_max-1
     keep(j+1:N_max)=photon(1:N_max-j).*photon(j+1:N_max);
-    g(j+1)=mean(keep);
     tau(j+1)=interval*j;
+    g(j+1)=mean(keep(j+1:N_max));
     clear keep
 end
 toc
 g=1.0 + g./( ave_photon*ave_photon );
+
 % g=g./( mean(photon.*photon) );
 % % % Fitting 
 display('Fit Autocorrelation Function');
@@ -30,9 +32,9 @@ while n>0
     G = @(x,time)  1.0 + 1.0/x(1) ./ (1+time/x(2));
     x0=[Ni Di];
     [x,resnorm,~,exitflag,output] = lsqcurvefit(G,x0,tau(1:FitRange),g(1:FitRange));
-    semilogx(tau,g)
+    semilogx(tau(1:FitRange),g(1:FitRange));
     hold on
-    semilogx(tau(1:FitRange),G(x,tau(1:FitRange)))
+    semilogx(tau(1:FitRange),G(x,tau(1:FitRange)));
     hold off
 %     ylim([-0.1 1.1]);
 
