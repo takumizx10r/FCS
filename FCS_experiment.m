@@ -1,7 +1,7 @@
 clear
 close all
 dt=2.0*10^(-6);
-MaxIter=5*10^3;
+MaxIter=1*10^5;
 Resolution=0.233;
 [imfile, path, indx]=uigetfile(strcat(pwd,'\*.tif'));
 imdata=imread(strcat(path,'/',imfile));
