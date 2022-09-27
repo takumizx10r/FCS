@@ -4,7 +4,7 @@ dt=2*10^-6;
 N_particle=10^3;
 MaxFrame=1*10^4;
 Resolution=0.2;
-noise_level=1.0;
+noise_level=0.0;
 D=600;
 mu=0;
 sigma=sqrt(2.0*D*dt);
@@ -44,16 +44,16 @@ for iter=1:MaxFrame
     N_photon(iter+1)=count_particle(x_l,Resolution);
     % % %
     % % % output
-%     if rem(iter,1000)==0
-%         scatter(x_l(1,:),x_l(2,:),'k.');
-%         pbaspect([1 1 1])
-%         hold on
-%         cir=viscircles([0. 0.], Resolution/2.,'color','b','linestyle','--');
-%         xlim([-1 1]);
-%         ylim([-1 1]);
-%         f(fix(iter/100))=getframe(gcf);
-%         hold off
-%     end
+    if rem(iter,1000)==0
+        scatter(x_l(1,:),x_l(2,:),'k.');
+        pbaspect([1 1 1])
+        hold on
+        cir=viscircles([0. 0.], Resolution/2.,'color','b','linestyle','--');
+        xlim([-1 1]);
+        ylim([-1 1]);
+        f(fix(iter/100))=getframe(gcf);
+        hold off
+    end
     % % %
 end
 
@@ -73,9 +73,9 @@ hold off
 % % % Fitting Autocorrelation function
 % [FitPara]=Copy_of_func_FCS(dt,N_photon);
 noise=-1 + (1+1)*rand(1,numel(N_photon));
-[FitPara]=func_FCS(dt,N_photon+noise);
+[FitPara]=func_FCS(dt,N_photon+noise,Resolution,0.0);
 N_detect=FitPara(1);
-D_eff=(Resolution/2.0)*(Resolution/2.0) / (4.0*FitPara(2));
+D_eff=FitPara(2);
 % % % % % % % % % % % % % % 
 
 

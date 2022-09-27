@@ -1,7 +1,8 @@
-function [x] = func_FCS(interval,photon)
+function [x] = func_FCS(interval,photon,R,Dz)
 N_max=size(photon,2);
+w=0.5*R;
 
-prompt = {'Initial N:','Initial tau_D:', 'FitRange(frame):'};
+prompt = {'Initial N:','Initial D:', 'FitRange(frame):'};
 dlgtitle = 'Initial values';
 dims = [1 35];
 definput = {'10','0.00001',num2str(N_max)};
@@ -24,12 +25,14 @@ end
 toc
 g=1.0 + g./( ave_photon*ave_photon );
 
+% AutoCor='1.0 + 1.0/a ./ (1+x/b)'
 % g=g./( mean(photon.*photon) );
 % % % Fitting 
 display('Fit Autocorrelation Function');
 n=1;
 while n>0
-    G = @(x,time)  1.0 + 1.0/x(1) ./ (1+time/x(2));
+%     G = @(x,time)  1.0 + 1.0/x(1) ./ (1+4.0*x(2).*time./w^2).*sqrt(1.0./(1.0+4.0*x(2).*time./Dz^2));
+    G = @(x,time)  1.0 + 1.0/x(1) ./ (1+4.0*x(2).*time./w^2);
     x0=[Ni Di];
     [x,resnorm,~,exitflag,output] = lsqcurvefit(G,x0,tau(1:FitRange),g(1:FitRange));
     semilogx(tau(1:FitRange),g(1:FitRange));

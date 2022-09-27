@@ -1,8 +1,8 @@
 clear
 close all
-dt=2.0*10^(-6);
+dt=4.0*10^(-6);
 MaxIter=1*10^5;
-Resolution=0.233;
+Resolution=0.170;
 [imfile, path, indx]=uigetfile(strcat(pwd,'\*.tif'));
 imdata=imread(strcat(path,'/',imfile));
 
@@ -24,7 +24,7 @@ plot(tdata,N_photon)
 
 % % % Fitting Autocorrelation function
 display('Fitting Autocorrelation function')
-[FitPara]=func_FCS(dt,N_photon);
+[FitPara]=func_FCS(dt,N_photon,Resolution,0.0);
 N_detect=FitPara(1);
 D_eff=(Resolution/2.0)*(Resolution/2.0) / (4.0*FitPara(2));
 % % % 
