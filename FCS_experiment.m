@@ -5,6 +5,7 @@ MaxIter=inf;
 Resolution=0.170; %%um
 [imfile, path, indx]=uigetfile(strcat(pwd,'\*.tif'));
 imdata=imread(strcat(path,'/',imfile));
+[~, name, ext]=fileparts(imfile);
 
 if MaxIter==inf
     TotalIteration=size(imdata,1)*size(imdata,2)-1;
@@ -21,17 +22,28 @@ for i=0:TotalIteration
 end
 figure
 plot(tdata,N_photon)
-
+ax=gca;
+xlabel('Time \itt \rm(s)','FontSize',20)
+ylabel('Photon','FontSize',20)
+ax.FontSize=18;
+axtoolbar('Visible','off');
+exportgraphics(gcf, ...
+    strcat(path,'/',name,'-photon.png'), ...
+    'Resolution',600)
 % % % Fitting Autocorrelation function to determine DZ
 [FitPara,G]=func_FCS_fit_resolutions(dt,N_photon,Resolution);
 N_detect=FitPara(1);
 Dz=FitPara(2);
-
+exportgraphics(gcf, ...
+    strcat(path,'/',name,'-autocorrelation.png'), ...
+    'Resolution',600)
 % % % Fitting Autocorrelation function
-% [FitPara,G]=func_FCS(dt,N_photon,Resolution,0.60);
+% [FitPara,G]=func_FCS(dt,N_photon,Resolution,Dz);
 % N_detect=FitPara(1);
 % D_eff=FitPara(2);
+% exportgraphics(gcf, ...
+%     strcat(path,'/',name,'-autocorrelation.png'), ...
+%     'Resolution',600)
 % % % 
 cd (path);
-[~, name, ext]=fileparts(imfile);
 save(name)

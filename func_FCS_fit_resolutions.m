@@ -4,7 +4,7 @@ w=0.5*R;
 prompt = {'Initial N:','Known D:', 'FitRange(frame):', 'Dimension:','Move sum:', 'Initial wz (um)'};
 dlgtitle = 'Initial values';
 dims = [1 35];
-definput = {'10','420', num2str(N_max), '3','3','1.0'};
+definput = {'10','420', num2str(N_max), '3','5','1.0'};
 answer = inputdlg(prompt,dlgtitle,dims,definput);
 Ni=str2num(answer{1});
 Di=str2double(answer{2});
@@ -49,7 +49,7 @@ while n>0
 
     x0=[Ni wz];
     %     [x,resnorm,~,exitflag,output] = lsqcurvefit(G,x0,tau(1:FitRange),g(1:FitRange));
-%     FitPara=x;
+    %     FitPara=x;
     A=[];
     b=[];
     Aeq=[];
@@ -59,20 +59,23 @@ while n>0
     ub=[1000,   5.0];
     options = optimset('fmincon');
     options.Algorithm=('interior-point');
-%     options.TolX=10^-13;
-%     options.MaxIter=10000;
+    %     options.TolX=10^-13;
+    %     options.MaxIter=10000;
     FitPara = fmincon(@LeastSquare,x0,A,b,Aeq,beq,lb,ub,nonlcon,options);
 
+    % % % % % % % % % % % %     Make log plot
     disp(FitPara);
     semilogx(tau(1:FitRange),g(1:FitRange),'k*');
     hold on
     semilogx(tau(1:FitRange),G(FitPara,tau(1:FitRange)),'b-');
     hold off
     ax=gca;
-    xlabel('Lag \it\tau','FontSize',20)
-    ylabel('Autocorrelation \itG','FontSize',20)
+    axtoolbar('Visible','off');
+    xlabel('Lag \it\tau \rm(s)','FontSize',20)
+    ylabel('Autocorrelation \it','FontSize',20)
     ax.FontSize=18;
-
+    legend('Exp.','\itG(\tau)','fontsize',18)
+    % % % % % % % % % %
     answer = questdlg('Do you like to fit again with different I.V.?', ...
         'Yes or No', ...
         'Yes','No','Cancel');
