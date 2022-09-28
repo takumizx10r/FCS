@@ -1,4 +1,4 @@
-function [x] = func_FCS(interval,photon,R,Dz)
+function [x,g] = func_FCS(interval,photon,R,Dz)
 N_max=size(photon,2);
 w=0.5*R;
 prompt = {'Initial N:','Initial D:', 'FitRange(frame):', 'Dimension:','Move sum:'};
