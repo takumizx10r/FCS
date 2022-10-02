@@ -117,7 +117,7 @@ exportgraphics(gcf, ...
 % % % % % % % % % % % % % %
 
 
-
+save ('result.mat') 
 
 
 
