@@ -4,7 +4,7 @@ dt=2*10^-6;
 N_particle=2E3;
 MaxFrame=1*10^5;
 Resolution=0.2;
-noise_level=1.0;
+noise_level=10.0;
 D=400;
 mu=0;
 sigma=sqrt(2.0*D*dt);
@@ -47,32 +47,32 @@ for iter=1:MaxFrame
     [N_photon(iter+1),BF]=count_particle(x_l,Resolution);
     % % %
     % % % output
-    if rem(iter,10^3)==0
-        scatter(x_l(1,:),x_l(2,:),'k.');
-        hold on
-        scatter(x_l(1,BF),x_l(2,BF),'green.');
-        pbaspect([1 1 1])
-        cir=viscircles([0. 0.], Resolution/2.,'color','b','linestyle','--','linewidth',1);
-        xlim([-1 1]);
-        ylim([-1 1]);
-        ax=gca;
-        xlabel('\itx','FontSize',20)
-        ylabel('\ity','FontSize',20)
-        ax.FontSize=18;
-        axtoolbar('Visible','off');
-        f(fix(iter/10^3))=getframe(gcf);
-        hold off
-        exportgraphics(gcf, ...
-            strcat(outputfigurefile,sprintf('%05d.png',fix(iter/10^3))), ...
-            'Resolution',600,'BackgroundColor','white');
-    end
+%     if rem(iter,10^3)==0
+%         scatter(x_l(1,:),x_l(2,:),'k.');
+%         hold on
+%         scatter(x_l(1,BF),x_l(2,BF),'green.');
+%         pbaspect([1 1 1])
+%         cir=viscircles([0. 0.], Resolution/2.,'color','b','linestyle','--','linewidth',1);
+%         xlim([-1 1]);
+%         ylim([-1 1]);
+%         ax=gca;
+%         xlabel('\itx','FontSize',20)
+%         ylabel('\ity','FontSize',20)
+%         ax.FontSize=18;
+%         axtoolbar('Visible','off');
+%         f(fix(iter/10^3))=getframe(gcf);
+%         hold off
+%         exportgraphics(gcf, ...
+%             strcat(outputfigurefile,sprintf('%05d.png',fix(iter/10^3))), ...
+%             'Resolution',600,'BackgroundColor','white');
+%     end
     % % %
 end
-v = VideoWriter('mv_particle.mp4','MPEG-4');
-v.FrameRate = 20;
-open(v);
-writeVideo(v,f);
-close(v);
+% v = VideoWriter('mv_particle.mp4','MPEG-4');
+% v.FrameRate = 20;
+% open(v);
+% writeVideo(v,f);
+% close(v);
 % % % Fitting MSD
 F = @(x,xdata)4.0*x(1)*xdata;
 x0=D;

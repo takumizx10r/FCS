@@ -55,8 +55,8 @@ while n>0
     Aeq=[];
     beq=[];
     nonlcon=[];
-    lb=[0.0   ,   0.10];
-    ub=[1000,   5.0];
+    lb=[0.0   ,   0.0];
+    ub=[1000,   10.0];
     options = optimset('fmincon');
     options.Algorithm=('interior-point');
     %     options.TolX=10^-13;
