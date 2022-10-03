@@ -1,6 +1,6 @@
 clear
 close all
-dt=4.0*10^(-6); %%sec
+dt=2.0*10^(-6); %%sec
 MaxIter=inf;
 Resolution=0.170; %%um
 [imfile, path, indx]=uigetfile(strcat(pwd,'\*.tif'));
