@@ -1,16 +1,17 @@
 function [FitPara,g] = func_FCS(interval,photon,R,Dz)
 N_max=size(photon,2);
 w=0.5*R;
-prompt = {'Initial N:','Initial D:', 'FitRange(frame):', 'Dimension:','Move sum:'};
+prompt = {'Initial N:','Initial D:', 'FitRange(start frame):', 'FitRange(end frame):', 'Dimension:','Move sum:'};
 dlgtitle = 'Initial values';
 dims = [1 35];
-definput = {'10','100',num2str(N_max), '3','3'};
+definput = {'10','100', '1',num2str(N_max), '3','3'};
 answer = inputdlg(prompt,dlgtitle,dims,definput);
 Ni=str2num(answer{1});
 Di=str2double(answer{2});
-FitRange=str2num(answer{3});
-dimension=str2num(answer{4});
-movesum=str2double(answer{5});
+FitRange_start=str2num(answer{3});
+FitRange_end=str2num(answer{4});
+dimension=str2num(answer{5});
+movesum=str2double(answer{6});
 wz=Dz;
 if movesum~=0
     photon=movsum(photon,movesum);
@@ -59,9 +60,9 @@ while n>0
 
 % % % % % % % % % % % %     Make log plot
     disp(FitPara);
-    semilogx(tau(1:FitRange),g(1:FitRange),'k*');
+    semilogx(tau(1:FitRange_end),g(1:FitRange_end),'k*');
     hold on
-    semilogx(tau(1:FitRange),G(FitPara,tau(1:FitRange)),'b-');
+    semilogx(tau(FitRange_start:FitRange_end),G(FitPara,tau(FitRange_start:FitRange_end)),'b-');
     hold off
     ax=gca;
     axtoolbar('Visible','off');
@@ -77,16 +78,28 @@ while n>0
     % Handle response
     switch answer
         case 'Yes'
-            prompt = {'Initial N:','Initial D:', 'FitRange(frame):', 'Dimension:','Move sum:'};
+            prompt = {'Initial N:','Initial D:', 'FitRange(start frame):', 'FitRange(end frame):', 'Dimension:','Move sum:'};
             dlgtitle = 'Initial values';
             dims = [1 35];
-            definput = {num2str(Ni),num2str(Di),num2str(FitRange),num2str(dimension),num2str(movesum)};
+            definput = {num2str(Ni),num2str(Di),num2str(FitRange_start),num2str(FitRange_end),num2str(dimension),num2str(movesum)};
             answer = inputdlg(prompt,dlgtitle,dims,definput);
             Ni=str2num(answer{1});
             Di=str2double(answer{2});
-            FitRange=str2num(answer{3});
-            dimension=str2num(answer{4});
-            movesum=str2double(answer{5});
+            FitRange_start=str2num(answer{3});
+            FitRange_end=str2num(answer{4});
+            dimension=str2num(answer{5});
+            movesum=str2double(answer{6});
+
+% % %             prompt = {'Initial N:','Initial D:', 'FitRange(frame):', 'Dimension:','Move sum:'};
+% % %             dlgtitle = 'Initial values';
+% % %             dims = [1 35];
+% % %             definput = {num2str(Ni),num2str(Di),num2str(FitRange),num2str(dimension),num2str(movesum)};
+% % %             answer = inputdlg(prompt,dlgtitle,dims,definput);
+% % %             Ni=str2num(answer{1});
+% % %             Di=str2double(answer{2});
+% % %             FitRange=str2num(answer{3});
+% % %             dimension=str2num(answer{4});
+% % %             movesum=str2double(answer{5});
         case 'No'
             n=0;
     end
@@ -101,7 +114,7 @@ end
             end
         end
         sum=0.0;
-        for i=1:FitRange
+        for i=FitRange_start:FitRange_end
             sum=sum+( g(i) - func_autocorrelation_function( x, tau(i)) )^2;
         end
         Q=sum;
