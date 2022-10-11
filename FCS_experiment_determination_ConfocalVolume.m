@@ -1,6 +1,6 @@
 clear
 close all
-dt=4.0*10^(-6); %%sec
+dt=10.0*10^(-6); %%sec
 MaxIter=inf;
 Resolution=0.170; %%um
 % Resolution=0.8; %%um
